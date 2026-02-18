@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: bd-postgres
+    environment:
+      - POSTGRES_USER=postgres-user
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+volumes:
+  postgres_data:
