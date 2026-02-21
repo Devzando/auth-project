@@ -24,7 +24,7 @@ public class JwtService implements IJwtGateway {
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiry))
                 .subject(userDomain.getId().toString())
-                .claim("scope", userDomain.getProfileDomain().getRole())
+                .claim("scope", userDomain.getProfileDomain().getRole().value())
                 .build();
 
         return encoder.encode(

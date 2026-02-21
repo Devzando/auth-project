@@ -9,6 +9,7 @@ import com.appdev.usecases.user.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class UserModuleConfig {
@@ -20,11 +21,12 @@ public class UserModuleConfig {
 
     // Mappers
     @Bean
-    UserMapper userMapper(){
-        return new UserMapper();
+    UserMapper userMapper(ProfileMapper profileMapper){
+        return new UserMapper(profileMapper);
     }
 
     // Use Cases
+    @Transactional
     @Bean
     CreateUserUseCase createUserUseCase(IUserGateway userGateway, IProfileGateway profileGateway, IPasswordHasherGateway passwordHasherGateway){
         return new CreateUserUseCase(userGateway, passwordHasherGateway, profileGateway);

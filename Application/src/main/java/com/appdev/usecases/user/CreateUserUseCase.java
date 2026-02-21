@@ -7,7 +7,7 @@ import com.appdev.exceptions.NotFoundException;
 import com.appdev.gateways.IPasswordHasherGateway;
 import com.appdev.gateways.IProfileGateway;
 import com.appdev.gateways.IUserGateway;
-import com.appdev.usecases.user.dtos.CreateUserRequest;
+import com.appdev.usecases.user.dtos.CreateUserDTO;
 import com.appdev.valueobject.Email;
 import com.appdev.valueobject.Role;
 
@@ -22,11 +22,11 @@ public class CreateUserUseCase {
         this.profileGateway = profileGateway;
     }
 
-    public void execute(CreateUserRequest request){
+    public void execute(CreateUserDTO request){
         boolean userAlreadyExist = userGateway.existsByEmail(new Email(request.email()));
 
         if(userAlreadyExist)
-            throw new ConflictException("Usuário já existe");
+            throw new ConflictException("Erro ao criar usuário");
 
         ProfileDomain profile = profileGateway.findByRole(new Role(request.role()))
                 .orElseThrow(() -> new NotFoundException("Role não existe"));

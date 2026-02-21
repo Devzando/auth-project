@@ -1,4 +1,4 @@
-package com.appdev.controllers.dtos.auth;
+package com.appdev.controllers.requests.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
