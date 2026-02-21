@@ -1,11 +1,12 @@
 package com.appdev.ioc;
 
-import com.appdev.gateways.IJwtGateway;
-import com.appdev.gateways.IPasswordHasherGateway;
-import com.appdev.gateways.IUserGateway;
-import com.appdev.gateways.PasswordHasherGateway;
+import com.appdev.gateways.*;
+import com.appdev.gateways.mappers.RefreshTokenMapper;
+import com.appdev.gateways.mappers.UserMapper;
+import com.appdev.persistence.RefreshTokenRepository;
 import com.appdev.security.JwtService;
 import com.appdev.usecases.auth.LoginUseCase;
+import com.appdev.usecases.auth.RefreshTokenUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,10 +26,29 @@ public class AuthModuleConfig {
         return new JwtService(jwtEncoder);
     }
 
-    // Use cases
-    @Transactional(readOnly = true)
     @Bean
-    LoginUseCase loginUseCase(IUserGateway userGateway, IJwtGateway jwtGateway, IPasswordHasherGateway passwordHasherGateway){
-        return new LoginUseCase(userGateway, jwtGateway, passwordHasherGateway);
+    IRefreshTokenGateway iRefreshTokenGateway(RefreshTokenRepository refreshTokenRepository, RefreshTokenMapper refreshTokenMapper){
+        return new RefreshTokenRepositoryGateway(refreshTokenRepository, refreshTokenMapper);
+    }
+
+    // Mappers
+    @Bean
+    RefreshTokenMapper refreshTokenMapper(UserMapper userMapper){
+        return new RefreshTokenMapper(userMapper);
+    }
+
+    // Use cases
+    @Bean
+    LoginUseCase loginUseCase(
+            IUserGateway userGateway,
+            IJwtGateway jwtGateway,
+            IPasswordHasherGateway passwordHasherGateway,
+            IRefreshTokenGateway refreshTokenGateway){
+        return new LoginUseCase(userGateway, jwtGateway, passwordHasherGateway, refreshTokenGateway);
+    }
+
+    @Bean
+    RefreshTokenUseCase refreshTokenUseCase(IRefreshTokenGateway refreshTokenGateway, IJwtGateway jwtGateway, IUserGateway userGateway){
+        return new RefreshTokenUseCase(refreshTokenGateway, jwtGateway, userGateway);
     }
 }

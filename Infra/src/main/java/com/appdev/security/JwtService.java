@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public class JwtService implements IJwtGateway {
     private final JwtEncoder encoder;
@@ -30,5 +31,10 @@ public class JwtService implements IJwtGateway {
         return encoder.encode(
                         JwtEncoderParameters.from(claims))
                 .getTokenValue();
+    }
+
+    @Override
+    public String generateRefreshToken() {
+        return UUID.randomUUID().toString();
     }
 }

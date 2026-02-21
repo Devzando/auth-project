@@ -26,7 +26,6 @@ public class UserModuleConfig {
     }
 
     // Use Cases
-    @Transactional
     @Bean
     CreateUserUseCase createUserUseCase(IUserGateway userGateway, IProfileGateway profileGateway, IPasswordHasherGateway passwordHasherGateway){
         return new CreateUserUseCase(userGateway, passwordHasherGateway, profileGateway);

@@ -1,7 +1,9 @@
 package com.appdev.controllers;
 
 import com.appdev.controllers.requests.auth.AuthRequest;
+import com.appdev.controllers.requests.auth.RefreshTokenRequest;
 import com.appdev.usecases.auth.LoginUseCase;
+import com.appdev.usecases.auth.RefreshTokenUseCase;
 import com.appdev.usecases.auth.dtos.LoginRequest;
 import com.appdev.usecases.auth.dtos.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Autenticação", description = "Endpoints relacionados com processos de autenticação")
 public class AuthController {
     private final LoginUseCase loginUseCase;
+    private final RefreshTokenUseCase refreshTokenUseCase;
 
-    public AuthController(LoginUseCase loginUseCase) {
+    public AuthController(LoginUseCase loginUseCase, RefreshTokenUseCase refreshTokenUseCase) {
         this.loginUseCase = loginUseCase;
+        this.refreshTokenUseCase = refreshTokenUseCase;
     }
 
     @Operation(summary = "Realizar login", description = "Endpoint para obter um token de acesso ao sistema")
@@ -31,5 +35,12 @@ public class AuthController {
         LoginResponse loginResponse = loginUseCase.execute(loginRequest);
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @Operation(summary = "Gerar um novo refreshToken", description = "Endpoint para obter um novo refreshToken")
+    @PostMapping("refresh")
+    public ResponseEntity<LoginResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request){
+        LoginResponse response = refreshTokenUseCase.execute(request.getRefreshToken());
+        return ResponseEntity.ok(response);
     }
 }
