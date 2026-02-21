@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface IUserGateway {
     Optional<UserDomain> findByEmail(Email email);
+    UserDomain save(UserDomain userDomain);
+    boolean existsByEmail(Email email);
 }
