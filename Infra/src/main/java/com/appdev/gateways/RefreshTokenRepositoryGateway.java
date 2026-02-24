@@ -4,19 +4,16 @@ import com.appdev.entities.RefreshTokenDomain;
 import com.appdev.entities.RefreshTokenEntity;
 import com.appdev.gateways.mappers.RefreshTokenMapper;
 import com.appdev.persistence.RefreshTokenRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class RefreshTokenRepositoryGateway implements IRefreshTokenGateway {
     private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenMapper refreshTokenMapper;
-
-    public RefreshTokenRepositoryGateway(RefreshTokenRepository refreshTokenRepository, RefreshTokenMapper refreshTokenMapper) {
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.refreshTokenMapper = refreshTokenMapper;
-    }
 
     @Override
     @Transactional

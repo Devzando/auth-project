@@ -5,13 +5,15 @@ import com.appdev.gateways.mappers.RefreshTokenMapper;
 import com.appdev.gateways.mappers.UserMapper;
 import com.appdev.persistence.RefreshTokenRepository;
 import com.appdev.security.JwtService;
+import com.appdev.security.SecurityContextUserProvider;
 import com.appdev.usecases.auth.LoginUseCase;
+import com.appdev.usecases.auth.LogoutAllAccountUseCase;
+import com.appdev.usecases.auth.LogoutUseCase;
 import com.appdev.usecases.auth.RefreshTokenUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class AuthModuleConfig {
@@ -29,6 +31,11 @@ public class AuthModuleConfig {
     @Bean
     IRefreshTokenGateway iRefreshTokenGateway(RefreshTokenRepository refreshTokenRepository, RefreshTokenMapper refreshTokenMapper){
         return new RefreshTokenRepositoryGateway(refreshTokenRepository, refreshTokenMapper);
+    }
+
+    @Bean
+    ICurrentUserProvider currentUserProvider(){
+        return new SecurityContextUserProvider();
     }
 
     // Mappers
@@ -50,5 +57,15 @@ public class AuthModuleConfig {
     @Bean
     RefreshTokenUseCase refreshTokenUseCase(IRefreshTokenGateway refreshTokenGateway, IJwtGateway jwtGateway, IUserGateway userGateway){
         return new RefreshTokenUseCase(refreshTokenGateway, jwtGateway, userGateway);
+    }
+
+    @Bean
+    LogoutUseCase logoutUseCase(IRefreshTokenGateway refreshTokenGateway){
+        return new LogoutUseCase(refreshTokenGateway);
+    }
+
+    @Bean
+    LogoutAllAccountUseCase logoutAllAccountUseCase(IRefreshTokenGateway refreshTokenGateway, ICurrentUserProvider currentUserProvider){
+        return new LogoutAllAccountUseCase(refreshTokenGateway, currentUserProvider);
     }
 }

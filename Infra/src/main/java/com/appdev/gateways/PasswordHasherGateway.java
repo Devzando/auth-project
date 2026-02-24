@@ -1,13 +1,12 @@
 package com.appdev.gateways;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@RequiredArgsConstructor
 public class PasswordHasherGateway implements IPasswordHasherGateway {
     private final PasswordEncoder passwordEncoder;
 
-    public PasswordHasherGateway(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public String hash(String password) {

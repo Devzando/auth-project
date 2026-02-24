@@ -4,18 +4,15 @@ import com.appdev.entities.ProfileDomain;
 import com.appdev.gateways.mappers.ProfileMapper;
 import com.appdev.persistence.ProfileRepository;
 import com.appdev.valueobject.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class ProfileRepositoryGateway implements IProfileGateway{
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
-
-    public ProfileRepositoryGateway(ProfileRepository profileRepository, ProfileMapper profileMapper) {
-        this.profileRepository = profileRepository;
-        this.profileMapper = profileMapper;
-    }
 
     @Override
     @Transactional(readOnly = true)

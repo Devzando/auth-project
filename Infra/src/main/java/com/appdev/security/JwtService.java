@@ -2,6 +2,7 @@ package com.appdev.security;
 
 import com.appdev.entities.UserDomain;
 import com.appdev.gateways.IJwtGateway;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -9,12 +10,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import java.time.Instant;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class JwtService implements IJwtGateway {
     private final JwtEncoder encoder;
-
-    public JwtService(JwtEncoder encoder) {
-        this.encoder = encoder;
-    }
 
     public String generateToken(UserDomain userDomain){
         Instant now = Instant.now();
