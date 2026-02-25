@@ -66,7 +66,7 @@ public class AuthController {
     @Operation(summary = "Realizar logout em todoas as sessões", description = "Endpoint para revogar acesso a todas as sessões")
     @PostMapping("logout/all")
     public ResponseEntity<MessageResponse> logoutAll(@Valid @RequestBody LogoutRequest request){
-        logoutAllAccountUseCase.execute(request.getRefreshToken());
+        logoutAllAccountUseCase.execute();
         return ResponseEntity.ok(new MessageResponse("Logout realizado com sucesso"));
     }
 }
